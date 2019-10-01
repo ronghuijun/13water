@@ -2,7 +2,7 @@
 <template>
   <div class="loginbg1" >
     <span>
-  <img src="../assets/BeginGame.png" alt="" @click="skipCardShowView" style="margin-top:38%;margin-left:35%;">    
+  <img src="../assets/PrepareGame.png" alt="" @click="skipCardShowView" style="margin-top:38%;margin-left:35%;">    
     
 
   <img src="../assets/HistoryList.png" alt="" @click="skipRankingList" style="margin-top:38%;margin-left:3%;">
