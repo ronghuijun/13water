@@ -39,11 +39,15 @@ export default {
   name: 'RankingList',
   data() {
      return {
-       "card":"*2 *3 *4 *5 *6 *7 *8 *9 *10 *J *Q *K *A",
-       
-       "cardsTotalInfo":[],
+       "card":"*2 *3 *4 *5 *6 *7 *8 *9 *Q &K *K &J #J",
+       "cardsUse":[],
+       "cardsTotal":[],
+       "cardsDegree":[],
+       "cardsType":[],
+       "cardsNumber":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+       //"cardsTotalInfo":[],
        "cardsTypeNumber":[0,0,0,0],//存放卡牌类型个数
-       "cardsNumber":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+       
        "qiandun":["","",""],
        "zhongdun":["","","","",""],
        "houdun":["","","","",""],
@@ -58,119 +62,360 @@ export default {
       },
     PlayAndShowCard(){
       //把牌分好
+        var max1=0;//有多少重复的牌
+        var max2=0;
         var cards=this.card.split(" ");
         for(var i=0;i<=12;i++){
-           var cardInfo={
-              degree:0,
-              type:"",
-              total:"",
-              number:0,//同等大小的牌
-              use:false,
-
-          };
-          cardInfo.total=cards[i];
-          cardInfo.type=cards[i].slice(0,1);
-          if(cardInfo.type==="#"){
+        
+          this.cardsUse[i]=false;
+          this.cardsTotal[i]=cards[i];
+          this.cardsType[i]=cards[i].slice(0,1);
+          /*cardInfo.total=cards[i];
+          cardInfo.type=cards[i].slice(0,1);*/
+          if(this.cardsType[i]==="#"){
             this.cardsTypeNumber[0]++;
-          }else if(cardInfo.type==="$"){
+            this.cardsType[i]=0;
+          }else if(this.cardsType[i]==="$"){
             this.cardsTypeNumber[1]++;
-          }else if(cardInfo.type==="&"){
+            this.cardsType[i]=1
+          }else if(this.cardsType[i]==="&"){
             this.cardsTypeNumber[2]++;
-          }else if(cardInfo.type==="*"){
+            this.cardsType[i]=2
+          }else if(this.cardsType[i]==="*"){
             this.cardsTypeNumber[3]++;
+            this.cardsType[i]=3
           }
+         
           if(cards[i].slice(1,2)==="A"){
-             cardInfo.degree=14;
-             this.cardsNumber[14]++;
+             
+            this.cardsDegree[i]=14;
+            this.cardsDegree[i]=parseInt(this.cardsDegree[i]);
+             
+             this.cardsNumber[this.cardsDegree[i]]++;
           }else if(cards[i].slice(1,2)==="K"){
             this.cardsNumber[13]++;
-            cardInfo.degree=13;
+            this.cardsDegree[i]=13;
           }else if(cards[i].slice(1,2)==="Q"){
-            cardInfo.degree=12;
+            this.cardsDegree[i]=12;
             this.cardsNumber[12]++;
           }else if(cards[i].slice(1,2)==="J"){
             this.cardsNumber[11]++;
-            cardInfo.degree=11;
+            this.cardsDegree[i]=11;
           }else if(cards[i].slice(1,2)==="1"){
-            cardInfo.degree=10;
+            this.cardsDegree[i]=10;
             this.cardsNumber[10]++;
           }
           else{
-            cardInfo.degree=parseInt(cards[i].slice(1,2));
-            this.cardsNumber[cardInfo.degree]++;
+            this.cardsDegree[i]=parseInt(cards[i].slice(1,2));
+            this.cardsNumber[this.cardsDegree[i]]++;
           }
-          this.cardsTotalInfo.push(cardInfo);
+          //this.cardsTotalInfo.push(cardInfo);
         
       }
-        /*console.log(this.cardsTotalInfo[0].degree);
-          console.log(this.cardsTotalInfo[1].degree);
-          console.log(this.cardsTotalInfo[2].degree);
-            console.log(this.cardsTotalInfo[3].degree);*/
-           
-/*对该数组进行冒泡排序 
-	var flag=false;*/
-//大的排序次数（arr.length-1）
-
-//排序
-this.cardsTotalInfo.sort(function(a,b){
-			
-				return  a.degree-b.degree
-			
-    })
-//把牌数赋值给各个牌
-for(var i=0;i<14;i++){
-  var j;
-  for(var item in this.cardsTotalInfo[i]){
- //let obj=this.cardsTotalInfo[j];
- // this.cardsTotalInfo[j][number]=this.cardsNumber[obj.degree];
-if(item==="degree"){
-   j=this.cardsTotalInfo[i][item];
- }
-}
- for(var item in this.cardsTotalInfo[i]){
-  if(item==="number")
-  {
+      //看是否有炸弹 有葫芦（重复牌数）
+      for(var i=1;i<=14;i++)
+      {
+        if(max1<this.cardsNumber[i])
+        max1=this.cardsNumber[i];
+      }
+      //看是否有同花
+      for(var i=0;i<4;i++)
+      {
+        if(max2<this.cardsTypeNumber[i])
+          {
+            
+            max2=this.cardsTypeNumber[i];
+          }
+      }
+      
     
-    this.cardsTotalInfo[i][item]=this.cardsNumber[j]
-    console.log(this.cardsTotalInfo[i][item])
-  }
-}
-}
-//console.log(this.cardsTotalInfo); 
-//先找炸弹 葫芦 顺子 同花 后墩
-/* for(var j=14;j<=1;j--){
-   //找炸弹
-   if(this.cardsNumber[j]==4){
-      var h=0;
-      for(var i=13;i<0;i++){
-       
-        if(this.cardsTotalInfo[i].degree===j){
-          this.cardsTotalInfo[i].use=true;//表示牌被使用
-          this.houdun[h]= this.cardsTotalInfo[i].total;
-          h++;
+        for (var i = this.cardsDegree.length - 1; i > 0; i--) {
+          for (var j = 0; j < i; j++) {
+            if (this.cardsDegree[j] < this.cardsDegree[j + 1]) {
+              [this.cardsDegree[j], this.cardsDegree[j + 1]] = [this.cardsDegree[j + 1], this.cardsDegree[j]];
+              [this.cardsTotal[j], this.cardsTotal[j + 1]] = [this.cardsTotal[j + 1], this.cardsTotal[j]];
+              [this.cardsType[j], this.cardsType[j + 1]] = [this.cardsType[j + 1], this.cardsType[j]];
+            }
+          }
         }
-        for()
+        this.decideHoudun(max1,max2);
+        this.decideZhongdun();
+   /*   console.log(this.cardsDegree)
+      console.log(this.cardsUse)
+      console.log(this.cardsTotal)
+      console.log(this.cardsType)
+
+      console.log(this.cardsNumber)
+       //"cardsTotalInfo":[],
+      console.log(this.cardsTypeNumber)*/
+      console.log(this.houdun)
+       console.log(this.zhongdun)
+   
+},
+    decideHoudun(max1,max2){
+      //找牌   
+      var houdun=[]
+      var flag;
+     
+     /* console.log(max1)
+      console.log(max2)*/
+      if(max1>2){
+
+           flag=-1;
+          for(var j=1;j<=14;j++){
+                
+                if(this.cardsNumber[j]==5-max1)                                  
+                {
+                  flag=j;
+                  break
+                }
+              }
+          if(flag>0){
+            for(var j=0;j<=12;j++)
+            {
+              
+              if(this.cardsDegree[j]===flag&&this.cardsUse[j]===false)
+              {
+                
+                this.cardsUse[j]=true;
+                this.cardsNumber[this.cardsDegree[j]]
+                houdun.push(this.cardsTotal[j]);
+                
+              }
+            }
+          
+        
+
+          for(var j=1;j<=14;j++){
+                
+                if(this.cardsNumber[j]==max1&&this.cardsUse[this.cardsNumber[j]]===false)
+                {
+                  flag=j;
+                  
+                }
+              }
+              
+          for(var j=0;j<=12;j++)
+          {
+            
+            if(this.cardsDegree[j]===flag)
+            {
+              
+              this.cardsUse[j]=true;
+              this.cardsNumber[this.cardsDegree[j]];
+              houdun.push(this.cardsTotal[j]);
+              
+            }
+          }
+       
+          }
+        }
+      //同花
+      if(max2>5&&flag<0){
+        for(var i=0;i<=3;i++){
+          if(this.cardsTypeNumber[i]>=5)
+          {
+            
+              flag=i
+              //console.log(flag)
+          }
+        }
+        for(var i=0;i<13;i++)
+        {
+          if(this.cardsType[i]===flag&&houdun.length<=4){
+            houdun.push(this.cardsTotal[i])
+            this.cardsType[i]--
+            this.cardsUse[i]=true
+          }
+        }
+      }
+      //只有2张
+      else{
+        for(var i=0;i<=12;i++){
+         
+          if(this.cardsNumber[this.cardsDegree[i]]===2&&houdun.length<=4)
+          {
+            
+            houdun.push(this.cardsTotal[i])
+           
+            //console.log(this.cardsDegree[i])
+           // console.log(this.cardsNumber[this.cardsDegree[i]])
+            this.cardsUse[i]=true
+              
+          }
+          
+        }
+            for(var j=1;j<=14;j++){
+                
+                if(this.cardsNumber[j]===1)                                  
+                {
+                  flag=j;
+                  break
+                }
+              }
+          for(var j=0;j<=12;j++)
+          {
+            
+            if(this.cardsDegree[j]===flag)
+            {
+              
+              this.cardsUse[j]=true;
+             
+              houdun.push(this.cardsTotal[j]);
+              
+            }
+          }
+      }
+      this.houdun=houdun
+  },
+  decideZhongdun(){
+         //找牌   
+      var zhongdun=[]
+      var flag;
+      var max1=0
+      var max2=0
+      var cardsnumber=[];
+      for(var i=0;i<15;i++)
+      {
+        if(this.cardsNumber[i]>0)
+        for(var j=0;j<this.cardsNumber[i];j++)
+        cardsnumber.push(this.cardsNumber[i])
+      }
+      cardsnumber.reverse();
+      console.log(this.cardsNumber)
+
+      console.log(cardsnumber)
+
+      console.log(this.cardsUse)
+      for(var i=0;i<13;i++)
+      {
+        
+        if(max1<cardsnumber[i]&&this.cardsUse[i]===false)
+        {
+        max1=cardsnumber[i];
+        console.log("i="+i)
+        }
+      }
+      
+      //看是否有同花
+      for(var i=0;i<4;i++)
+      {
+        if(max2<this.cardsTypeNumber[i])
+          {
+            
+            max2=this.cardsTypeNumber[i];
+          }
       }
 
-   }
-
- }*/
-/* 找到连续的数字算法
-var arr = [1,2,5,7,10,11,12,13,18,19,20,21,22,56,57,58];
-var index = 0;
-var result = [];
-for (var i = 0; i < arr.length; i++) {
-    if (arr[i] + 1 != arr[i+1]) {
-        var mini = arr.slice(index, i+1);
-        if (mini.length >= 5) {
-            result.push(mini);
+      console.log(max1)
+      console.log(max2)
+      if(max1>2){
+          for(var j=1;j<=14;j++){
+                
+                if(cardsnumber[j]==max1&&this.cardsUse[j]===false)
+                {
+                  flag=j;
+                  
+                }
+              }
+              
+          for(var j=0;j<=12;j++)
+          {
+            
+            if(this.cardsDegree[j]===flag)
+            {
+              
+              this.cardsUse[j]=true;
+              zhongdun.push(this.cardsTotal[j]);
+              
+            }
+          }
+          flag=-1;
+          for(var j=1;j<=14;j++){
+                
+                if(cardsnumber[j]==5-max1&&this.cardsUse[j]===false)                                  
+                {
+                  flag=j;
+                  break
+                }
+              }
+          if(flag>0){
+            for(var j=0;j<=12;j++)
+            {
+              
+              if(this.cardsDegree[j]===flag)
+              {
+                
+                this.cardsUse[j]=true;
+                zhongdun.push(this.cardsTotal[j]);
+                
+              }
+            }
+          }
+          if(flag<0){
+            
+            for(var t=0;y<3;t++){
+              for(var h=0;h<13;h++){
+                if(this.cardsTotal[h]===zhongdun.pop())
+                {
+                  this.cardsUse=false
+                }
+              }
+          }
+          }
         }
-        index = i+1;
-    }
-}
-console.log(result); 
-*/
-    }
+      //同花
+      if(max2>5&&flag<0){
+        for(var i=0;i<=3;i++){
+          if(this.cardsTypeNumber[i]>=5)
+          {
+            
+              flag=i
+              console.log(flag)
+          }
+        }
+        for(var i=0;i<13;i++)
+        {
+          if(this.cardsType[i]===flag&&zhongdun.length<=4){
+            zhongdun.push(this.cardsTotal[i])
+            this.cardsUse[i]=true
+          }
+        }
+      }
+      //只有2张
+      else{
+        for(var i=0;i<=12;i++){
+          if(this.cardsNumber[this.cardsDegree[i]]===2&&zhongdun.length<=4)
+          {
+            
+            zhongdun.push(this.cardsTotal[i])
+            this.cardsUse[i]=true
+              
+          }
+
+        }
+            for(var j=1;j<=14;j++){
+                
+                if(this.cardsNumber[j]===1)                                  
+                {
+                  flag=j;
+                  break
+                }
+              }
+          for(var j=0;j<=12;j++)
+          {
+            
+            if(this.cardsDegree[j]===flag)
+            {
+              
+              this.cardsUse[j]=true;
+              zhongdun.push(this.cardsTotal[j]);
+              
+            }
+          }
+      }
+      this.zhongdun=zhongdun
+  }
      
      
   },
