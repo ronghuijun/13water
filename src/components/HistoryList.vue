@@ -1,6 +1,6 @@
 
 <template>
-  <div class="loginbg1">
+  <div class="loginbg">
     <el-table
       :data="gameTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       height="410"
@@ -95,7 +95,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.loginbg1 {
+.loginbg {
   position: absolute;
   width: 100%;
   height: 100%;

@@ -29,7 +29,7 @@ export default {
   name: 'RankingList',
   data() {
      return {
-       "card":"#4 $2 $10 $K *4 $6 &A #A *8 &4 $4 &J &3",
+       "card":"#4 $5 $Q $K *4 $6 &4 #K *5 &K $4 &6 &Q",
        "cardsUse":[],
        "cardsTotal":[],
        "cardsDegree":[],
@@ -69,25 +69,39 @@ export default {
           this.$router.push({path:'/HistoryList'});
       },
     PlayAndShowCard(){
+        this.cardsUse=[];
+
+       this.cardsTotal=[]
+       this.cardsDegree=[]
+       this.cardsType=[]
+       this.cardsNumber=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+       //"cardsTotalInfo":[],
+      this.cardsTypeNumber=[0,0,0,0]
+       this.qiandun=["","",""]
+       this.zhongdun=[]
+       this.houdun=["","","","",""]
         this.setCards();
         this.decideHoudun();
-         this.decideZhongdun();
-        this.decideQiandun();
-        this.showCards()
-      console.log(this.cardsDegree)
+        
+       this.decideZhongdun();
+       this.decideQiandun();
+       /* console.log(this.cardsNumber)
+        console.log(this.cardsDegree)
+     
       console.log(this.cardsTotal)
       console.log(this.cardsType)
-      console.log(this.cardsNumber)
+      
       console.log(this.cardsTypeNumber)
       console.log(this.houdun)
       console.log(this.zhongdun)
       console.log(this.qiandun)
-      console.log(this.cardsNumber)
-     
+      console.log(this.cardsUse)*/
+      //console.log(this.cardsNumber)*/
+     this.showCards()
 
      
    
-},
+    },
     setCards(){
             //把牌分好
       
@@ -118,7 +132,7 @@ export default {
             this.cardsDegree[i]=14;
             this.cardsDegree[i]=parseInt(this.cardsDegree[i]);
              
-             this.cardsNumber[this.cardsDegree[i]]++;
+             this.cardsNumber[14]++;
           }else if(cards[i].slice(1,2)==="K"){
             this.cardsNumber[13]++;
             this.cardsDegree[i]=13;
@@ -139,11 +153,13 @@ export default {
           //this.cardsTotalInfo.push(cardInfo);
         
       }
-      for(var i=0;i<15;i++){
+      console.log(this.cardsDegree)
+     // console.log(this.cardsNumber)
+      /*for(var i=0;i<15;i++){
         if(this.cardsNumber[i]===0){
           this.cardsNumber[i]=-1
         }
-      }
+      }*/
 
         for (var i = this.cardsDegree.length - 1; i > 0; i--) {
           for (var j = 0; j < i; j++) {
@@ -177,21 +193,24 @@ export default {
             max2=this.cardsTypeNumber[i];
           }
       }
-     
+    
     
       if(max1>2){
 
            flag=-1;
+         
           for(var j=1;j<=14;j++){
                 
                 if(this.cardsNumber[j]==5-max1)                                  
                 {
                   flag=j;
-                  
                   break
                 }
               }
+          
+              
           if(flag>0){
+
             for(var j=0;j<=12;j++)
             {
               
@@ -201,40 +220,84 @@ export default {
                 this.cardsUse[j]=true;
                 this.cardsNumber[this.cardsDegree[j]]--
                 this.cardsTypeNumber[this.cardsType[j]]--
-                houdun.push(this.cardsTotal[j]);
-                
-                
+                houdun.push(this.cardsTotal[j]); 
               }
             }
-          
-        
-
-          for(var j=1;j<=14;j++){
-                
+          for(var j=1;j<=14;j++){ 
                 if(this.cardsNumber[j]==max1&&this.cardsUse[this.cardsNumber[j]]===false)
                 {
-                  flag=j;
-                  
+                  flag=j;  
                   
                 }
               }
-              
-          for(var j=0;j<=12;j++)
-          {
-            
-            if(this.cardsDegree[j]===flag)
-            {
-              
-              this.cardsUse[j]=true;
-              this.cardsNumber[this.cardsDegree[j]]--;
-              this.cardsTypeNumber[this.cardsType[j]]--
-              houdun.push(this.cardsTotal[j]);
-              
-            }
-          }
+                  
+              for(var j=0;j<=12;j++)
+              {
+                
+                if(this.cardsDegree[j]===flag)
+                {
+                  
+                  this.cardsUse[j]=true;
+                  this.cardsNumber[this.cardsDegree[j]]--;
+                  this.cardsTypeNumber[this.cardsType[j]]--
+                  houdun.push(this.cardsTotal[j]);
+                  
+                }
+              }
        
           }
+          //拆双数的情况
+         else if(max1===4&&flag===-1){
+                
+            for(var j=1;j<=14;j++){
+                if(this.cardsNumber[j]==5-max1+1)                                  
+                {
+                  flag=j;
+                 
+                  break
+                }
+              }
+            for(var j=0;j<=12;j++)
+            {
+              
+              if(this.cardsDegree[j]===flag&&this.cardsUse[j]===false)
+              {
+                
+                this.cardsUse[j]=true;
+                this.cardsNumber[this.cardsDegree[j]]--
+                this.cardsTypeNumber[this.cardsType[j]]--
+                houdun.push(this.cardsTotal[j]); 
+                break;
+              }
+            }
+    
+              for(var j=1;j<=14;j++){ 
+                if(this.cardsNumber[j]==max1&&this.cardsUse[this.cardsNumber[j]]===false)
+                {
+                  flag=j;  
+                  
+                }
+              }
+                  
+              for(var j=0;j<=12;j++)
+              {
+                
+                if(this.cardsDegree[j]===flag)
+                {
+                  
+                  this.cardsUse[j]=true;
+                  this.cardsNumber[this.cardsDegree[j]]--;
+                  this.cardsTypeNumber[this.cardsType[j]]--
+                  houdun.push(this.cardsTotal[j]);
+                  
+                }
+              }
+       
+              
+            }
         }
+            
+              
       //同花
       if(max2>=5&&flag<0){
         for(var i=0;i<=3;i++){
@@ -242,7 +305,7 @@ export default {
           {
             
               flag=i
-              console.log("flag="+flag)
+              
           }
         }
         for(var i=0;i<13;i++)
@@ -267,8 +330,7 @@ export default {
             
             houdun.push(this.cardsTotal[i])
            this.cardsTypeNumber[this.cardsType[i]]--
-            //console.log(this.cardsDegree[i])
-           // console.log(this.cardsNumber[this.cardsDegree[i]])
+           
             this.cardsUse[i]=true
               
           }
@@ -304,20 +366,7 @@ export default {
       var max1=0
       var max2=0
      
-/*
-      var cardsnumber=[];
-      for(var i=0;i<15;i++)
-      {
-        if(this.cardsNumber[i]>0)
-        for(var j=0;j<this.cardsNumber[i];j++)
-        {
-          cardsnumber.push(this.cardsNumber[i])
-        }
-        if(this.cardsNumber[i]==0)
-        cardsnumber.push(this.cardsNumber[i])
-      }
-      cardsnumber.reverse();
-      console.log(cardsnumber)*/
+
       for(var i=1;i<15;i++)
       {
         
@@ -337,8 +386,9 @@ export default {
             
           }
       }
-       console.log("max1="+max1)
-      console.log("max2="+max2)
+      console.log("max1="+max1)
+     console.log("max2="+max2)
+
    
       flag=-1
       if(max1>2){
@@ -347,42 +397,52 @@ export default {
                 if(this.cardsNumber[j]==max1)
                 {
                   flag=j;
+                 
                 }
               }
-              for(var i=0;i<13;i++){
+          /*    for(var i=0;i<13;i++){
                 if(this.cardsDegree[i]===flag)
                 {
                   flag=i
+                  
                   break
                 }
-              }
+              }*/
+             
               
           for(var j=0;j<=12;j++)
           {
             
+           
             if(this.cardsDegree[j]===flag)
             {
               
               this.cardsUse[j]=true;
+              
               zhongdun.push(this.cardsTotal[j]);
               
             }
           }
-          
+         flag=-1
           for(var j=1;j<=14;j++){
                 
                 if(this.cardsNumber[j]==5-max1)                                  
                 {
+                  
                   flag=j;
+                  
                   break
                 }
               }
-              for(var i=0;i<13;i++){
+              
+              
+            /*  for(var i=0;i<13;i++){
                 if(this.cardsDegree[i]===flag){
                   flag=i
+                  console.log("ccccc"+flag)
                   break
                 }
-              }
+              }*/
           if(flag>0){
             for(var j=0;j<=12;j++)
             {
@@ -396,9 +456,22 @@ export default {
               }
             }
           }
-          if(flag<0){
+          if(flag<0&&max2<5){
+            for(var j=12;j<=0;j--)
+            {
+              
+              if(this.cardsNumber[this.cardsDegree[j]]===1&&zhongdun.length<5)
+              {
+                
+                this.cardsUse[j]=true;
+                zhongdun.push(this.cardsTotal[j]);
+                
+              }
+            }
+          }
+          if(flag<0&&max2>5){
             
-            for(var t=0;y<3;t++){
+            for(var t=0;t<3;t++){
               for(var h=0;h<13;h++){
                 if(this.cardsTotal[h]===zhongdun.pop())
                 {
@@ -470,7 +543,7 @@ export default {
           }
         }
       }
-      console.log(zhongdun)
+      //console.log(zhongdun)
       this.zhongdun=zhongdun
     },
     decideQiandun(){

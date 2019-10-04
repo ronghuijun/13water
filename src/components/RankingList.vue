@@ -13,8 +13,8 @@
         <!--tr表示行 td表示列-->
         <tr>
           <td>&nbsp;&nbsp;&nbsp;</td>
-          <td>用户名</td>
-          <td>得分</td>
+          <td class="username">用户名</td>
+          <td class="userscore">得分</td>
         </tr>
         <tr v-for="(user) in ranginglist" :key="user.name">
           <td>
@@ -47,17 +47,17 @@ export default {
           },
           {
           "player_id": 1,
-          "name": "NO1",
+          "name": "NO4",
           "score": 100
           },
            {
           "player_id": 1,
-          "name": "NO1",
+          "name": "NO2",
           "score": 100
           },
            {
           "player_id": 1,
-          "name": "NO1",
+          "name": "NO3",
           "score": 100
           },
           ],
