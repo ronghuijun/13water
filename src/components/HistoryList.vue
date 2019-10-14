@@ -5,7 +5,7 @@
       :data="gameTableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
       height="410"
       border
-      style="width: 34.52%;margin-top:5%;margin-left:30%"
+      style="width: 34.52%;margin-top:5%;margin-left:30%;"
     >
       <el-table-column prop="id" label="比赛场次" width="180"></el-table-column>
       <el-table-column prop="score" label="分数" width="180"></el-table-column>

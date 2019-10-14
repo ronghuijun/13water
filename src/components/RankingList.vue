@@ -4,16 +4,16 @@
       <p>排&nbsp;行&nbsp;榜</p>
       <el-table
         :data="ranginglist.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-        height="400"
+        height="330"
         border
-        style="width: 700"
+        style="width: 700;"
       >
         <el-table-column prop="player_id" label="玩家id"></el-table-column>
-        <el-table-column prop="name" label="名字"></el-table-column>
+        <el-table-column prop="name" label="用户名"></el-table-column>
         <el-table-column prop="score" label="分数"></el-table-column>
       </el-table>
       <el-pagination
-        style="margin-top:0%;margin-left:30%"
+        style="margin-top:0%;margin-left:0%"
         :page-size="pageSize"
         layout="prev, pager, next"
         :total="ranginglist.length"
@@ -34,29 +34,8 @@ export default {
   data() {
      return {
        currentPage: 1,
-        pageSize: 7,
-        ranginglist:[
-          {
-          "player_id": 1,
-          "name": "NO1",
-          "score": 100
-          },
-          {
-          "player_id": 1,
-          "name": "NO4",
-          "score": 100
-          },
-           {
-          "player_id": 1,
-          "name": "NO2",
-          "score": 100
-          },
-           {
-          "player_id": 1,
-          "name": "NO3",
-          "score": 100
-          },
-          ],
+        pageSize:6,
+        ranginglist:[],
         squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
         backDialog: false
       }
@@ -82,9 +61,9 @@ export default {
            
         })
         .then(function (response) {
-         
-          console.log(response)
-          
+       
+          console.log(response.data)
+          _this.ranginglist=response.data
            
         })
         .catch(function (error) {
@@ -125,6 +104,7 @@ export default {
   }
   tr {
     text-align: center;
+    background: rgba(0, 0, 0, 0);
   }
 
   td {

@@ -6,6 +6,7 @@ import RankingList from '@/components/RankingList'
 import CardShowView from '@/components/CardShowView'
 import HistoryList from '@/components/HistoryList'
 
+
 Vue.use(Router)
 
 const originalPush = Router.prototype.push
