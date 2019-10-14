@@ -23,21 +23,33 @@ export default new Router({
     {
       path: '/BeginView',
       name: 'BeginView',
+      meta: {
+        requireAuth: true // 添加该字段，表示进入这个路由是需要登录的
+      },
       component: BeginView
     },
     {
       path: '/RankingList',
       name: 'RankingList',
+      meta: {
+        requireAuth: true // 添加该字段，表示进入这个路由是需要登录的
+      },
       component: RankingList
     },
     {
       path: '/CardShowView',
       name: 'CardShowView',
+      meta: {
+        requireAuth: true // 添加该字段，表示进入这个路由是需要登录的
+      },
       component: CardShowView
     },
     {
       path: '/HistoryList',
       name: 'HistoryList',
+      meta: {
+        requireAuth: true // 添加该字段，表示进入这个路由是需要登录的
+      },
       component: HistoryList
     }
   ]

@@ -2,15 +2,21 @@
   <div class="loginbg">
     <span></span>
     <div class="qian" style="margin-left:40%;margin-top:15%">
-      <li v-for="(item) in qiandunSrc"  :key="item.key" ><img :src="item.imgurl"  alt=""></li>
+      <li v-for="(item) in qiandunSrc" :key="item.key">
+        <img :src="item.imgurl" alt />
+      </li>
     </div>
 
     <div class="zhong" style="margin-left:35%;margin-top:25%">
-      <li v-for="(item) in zhongdunSrc"  :key="item.key" ><img :src="item.imgurl"  alt=""></li>
+      <li v-for="(item) in zhongdunSrc" :key="item.key">
+        <img :src="item.imgurl" alt />
+      </li>
     </div>
 
     <div class="hou" style="margin-left:35%;margin-top:35%">
-      <li v-for="(item) in houdunSrc"  :key="item.key" ><img :src="item.imgurl"  alt=""></li>
+      <li v-for="(item) in houdunSrc" :key="item.key">
+        <img :src="item.imgurl" alt />
+      </li>
     </div>
 
     <div class="buttons" style="margin-top:-150px;margin-left:1180px;">
@@ -20,11 +26,11 @@
     </div>
 
     <!--排行榜-->
-  
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'RankingList',
   data() {
@@ -59,6 +65,11 @@ export default {
         {imgurl:require("../assets/poker/first.png"),key:11},
         {imgurl:require("../assets/poker/first.png"),key:12},
        ],
+       "sendCards":[
+         "",
+         "",
+         ""
+       ]
       }
     },
   methods: {
@@ -69,22 +80,20 @@ export default {
           this.$router.push({path:'/HistoryList'});
       },
     PlayAndShowCard(){
-        this.cardsUse=[];
-
-       this.cardsTotal=[]
-       this.cardsDegree=[]
-       this.cardsType=[]
-       this.cardsNumber=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-       //"cardsTotalInfo":[],
-      this.cardsTypeNumber=[0,0,0,0]
-       this.qiandun=["","",""]
-       this.zhongdun=[]
-       this.houdun=["","","","",""]
-        this.setCards();
-        this.decideHoudun();
-        
-       this.decideZhongdun();
-       this.decideQiandun();
+       let _this=this;
+       let id;
+       
+        axios.post('https://api.shisanshui.rtxux.xyz/game/open', {
+         
+        })
+        .then(function (response) {
+          
+            //Receivecards=response.data.data.card
+          console.log(response.data.data.card)
+            _this.card=response.data.data.card
+            id=response.data.data.id
+            //console.log(_this.card)
+   
        /* console.log(this.cardsNumber)
         console.log(this.cardsDegree)
      
@@ -97,9 +106,54 @@ export default {
       console.log(this.qiandun)
       console.log(this.cardsUse)*/
       //console.log(this.cardsNumber)*/
-     this.showCards()
+   
+            
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function(data){
+                
+                console.log(_this.card)
+                   
+            _this.cardsUse=[];
 
-     
+            _this.cardsTotal=[]
+            _this.cardsDegree=[]
+            _this.cardsType=[]
+            _this.cardsNumber=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            //"cardsTotalInfo":[],
+          _this.cardsTypeNumber=[0,0,0,0]
+            _this.qiandun=["","",""]
+            _this.zhongdun=[]
+            _this.houdun=["","","","",""]
+              _this.setCards();
+              _this.decideHoudun();
+              
+            _this.decideZhongdun();
+            _this.decideQiandun();
+            _this.showCards()
+
+        })
+        .then(function(data){
+              axios.post('https://api.shisanshui.rtxux.xyz/game/submit', {
+                id:id,
+                card: _this.sendCards
+              })
+              .then(function (response) {
+                
+                
+                  console.log(response)//获取到的token
+                 
+                  
+              })
+              .catch(function (error) {
+                console.log(error);
+              })
+        })
+      
+
+       
    
     },
     setCards(){
@@ -224,7 +278,7 @@ export default {
               }
             }
           for(var j=1;j<=14;j++){ 
-                if(this.cardsNumber[j]==max1&&this.cardsUse[this.cardsNumber[j]]===false)
+                if(this.cardsNumber[j]==max1)
                 {
                   flag=j;  
                   
@@ -322,10 +376,10 @@ export default {
         }
       }
       //只有2张
-      if(max1<=2){
+      else if(max1<=2){
         for(var i=0;i<=12;i++){
          
-          if(this.cardsNumber[this.cardsDegree[i]]===2&&houdun.length<=4)
+          if(this.cardsNumber[this.cardsDegree[i]]===2&&houdun.length<4)
           {
             
             houdun.push(this.cardsTotal[i])
@@ -335,6 +389,11 @@ export default {
               
           }
           
+        }
+          for(var i=0;i<=12;i++){
+          if(this.cardsUse[i]===true){
+            this.cardsNumber[this.cardsDegree[i]]=0
+          }
         }
             for(var j=1;j<=14;j++){
                 
@@ -457,7 +516,7 @@ export default {
             }
           }
           if(flag<0&&max2<5){
-            for(var j=12;j<=0;j--)
+            for(var j=0;j<=12;j++)
             {
               
               if(this.cardsNumber[this.cardsDegree[j]]===1&&zhongdun.length<5)
@@ -504,7 +563,7 @@ export default {
       else{
        
         for(var i=0;i<=12;i++){
-          if(this.cardsNumber[this.cardsDegree[i]]===2&&zhongdun.length<=4)
+          if(this.cardsNumber[this.cardsDegree[i]]===2&&zhongdun.length<4&&this.cardsUse[i]==false)
           {
            
             zhongdun.push(this.cardsTotal[i])
@@ -514,7 +573,7 @@ export default {
           }
 
         }
-        while(zhongdun.length<5){
+        while(zhongdun.length<5&&max1==2){
             for(var j=1;j<15;j++){
                 
                 if(this.cardsNumber[j]===1)                                  
@@ -524,6 +583,47 @@ export default {
                   break
                 }
               }
+              for(var i=0;i<13;i++){
+                if(this.cardsDegree[i]===flag&&this.cardsUse[i]===false){
+                  flag=i
+                  break
+                }
+              }
+          for(var j=0;j<=12;j++)
+          {
+            
+            if(j===flag)
+            {
+              
+              this.cardsUse[j]=true;
+              zhongdun.push(this.cardsTotal[j]);
+              
+            }
+          }
+        }
+           while(zhongdun.length<5&&max1==1){
+            
+           
+            for(var j=1;j<15;j++){
+               
+                if(this.cardsNumber[j]===1)                                  
+                {
+                  flag=j;
+                  
+                 
+                }
+              }
+              for(var j=1;j<15;j++){
+                
+                if(j==flag)                                  
+                {
+                   this.cardsNumber[j]--
+                  break
+                  
+                 
+                }
+              }
+              
               for(var i=0;i<13;i++){
                 if(this.cardsDegree[i]===flag&&this.cardsUse[i]===false){
                   flag=i
@@ -614,6 +714,10 @@ export default {
           this.houdunSrc[i].imgurl=require("../assets/poker/"+"方片"+this.houdun[i].slice(1,2)+".png")
         }
       }
+      this.sendCards[0]=this.qiandun[0]+" "+this.qiandun[1]+" "+this.qiandun[2]
+      this.sendCards[1]=this.zhongdun[0]+" "+this.zhongdun[1]+" "+this.zhongdun[2]+" "+this.zhongdun[3]+" "+this.zhongdun[4]
+      this.sendCards[2]=this.houdun[0]+" "+this.houdun[1]+" "+this.houdun[2]+" "+this.houdun[3]+" "+this.houdun[4]
+      console.log(this.sendCards)
        
     }
      
@@ -636,34 +740,33 @@ export default {
   background-size: cover;
   -webkit-background-size: cover;
   -o-background-size: cover;
-  .qian{
-    
-    li{
+  .qian {
+    li {
       float: left;
       list-style: none;
-      img{
-        margin-left:15px;
-        width:70px;
+      img {
+        margin-left: 15px;
+        width: 70px;
       }
     }
   }
-  .zhong{
-     li{
+  .zhong {
+    li {
       float: left;
       list-style: none;
-      img{
-        margin-left:15px;
-        width:70px;
+      img {
+        margin-left: 15px;
+        width: 70px;
       }
     }
   }
-  .hou{
-     li{
+  .hou {
+    li {
       float: left;
       list-style: none;
-      img{
-        margin-left:15px;
-        width:70px;
+      img {
+        margin-left: 15px;
+        width: 70px;
       }
     }
   }
@@ -672,7 +775,7 @@ export default {
   }
   .phb {
     z-index: 1;
-    margin-top:-85%;
+    margin-top: -85%;
     margin-left: 80px;
     p {
       text-align: center;
@@ -684,9 +787,8 @@ export default {
   }
 
   .buttons {
-
     img {
-        cursor : pointer;
+      cursor: pointer;
       width: 197px;
       height: 80px;
     }
