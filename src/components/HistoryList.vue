@@ -33,7 +33,7 @@
       <p>时间：{{gameRecordDetails.timestamp}}</p>
 
       <el-table :data="gameRecordDetails.detail" height="235" border style="width:88%">
-        <el-table-column prop="playerId" label="玩家id" width="100"></el-table-column>
+        <el-table-column prop="player_id" label="玩家id" width="100"></el-table-column>
         <el-table-column prop="card" label="卡牌样式" width="600px"></el-table-column>
         <el-table-column prop="score" label="玩家分数" width="100px"></el-table-column>
       </el-table>
@@ -326,6 +326,7 @@ export default {
          
           console.log(response)
            _this.gameRecordDetails=response.data.data
+           _this.convertCards()
            
         })
         .catch(function (error) {
@@ -344,7 +345,7 @@ export default {
             params: {
               player_id: parseInt(_this.$store.state.UserId),
               limit: 1000,
-              page:1,
+              page:0,
             }
         })
         .then(function (response) {
