@@ -5,7 +5,7 @@
 > A Vue.js project
 
 ## 运行环境
-nodejs
+操作系统：windows或者Linux；nodejs
 
 ## 编译方法+使用方法
 
