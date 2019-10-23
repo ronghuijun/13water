@@ -1,6 +1,6 @@
 # 13water1
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b04a3a6b93d841258ab684f7ac5270ac)](https://www.codacy.com/manual/ronghuijun/13water?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ronghuijun/13water&amp;utm_campaign=Badge_Grade) ![](https://img.shields.io/badge/language-vue-orange.svg) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)   
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b04a3a6b93d841258ab684f7ac5270ac)](https://www.codacy.com/manual/ronghuijun/13water?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ronghuijun/13water&amp;utm_campaign=Badge_Grade) ![](https://img.shields.io/badge/language-JavaScript-orange.svg) [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)   
 
 > A Vue.js project
 
