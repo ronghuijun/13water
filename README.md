@@ -3,7 +3,10 @@
 
 > A Vue.js project
 
-## Build Setup
+## 运行环境
+nodejs
+
+## 编译方法+使用方法
 
 ``` bash
 # install dependencies
