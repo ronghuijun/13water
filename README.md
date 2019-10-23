@@ -1,5 +1,6 @@
- [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b04a3a6b93d841258ab684f7ac5270ac)](https://www.codacy.com/manual/ronghuijun/13water?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ronghuijun/13water&amp;utm_campaign=Badge_Grade) ![](https://img.shields.io/badge/language-vue-orange.svg)
 # 13water1
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b04a3a6b93d841258ab684f7ac5270ac)](https://www.codacy.com/manual/ronghuijun/13water?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ronghuijun/13water&amp;utm_campaign=Badge_Grade) ![](https://img.shields.io/badge/language-vue-orange.svg)
 
 > A Vue.js project
 
