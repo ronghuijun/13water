@@ -1,3 +1,4 @@
+![](https://img.shields.io/badge/language-vue-orange.svg)
 # 13water1
 
 > A Vue.js project
